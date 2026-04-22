@@ -111,41 +111,67 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 top-[72px] bg-black z-[999] lg:hidden p-6 overflow-y-auto"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 bg-[#000000] z-[9999] lg:hidden flex flex-col h-screen w-screen"
           >
-            <div className="flex flex-col gap-6">
-              {navLinks.map((link) => (
-                <div key={link.name} className="flex flex-col gap-4">
+            <div className="flex items-center justify-between px-6 py-8 border-b border-white/10">
+              <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2">
+                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center rotate-45">
+                  <span className="text-black font-bold text-xl -rotate-45">M</span>
+                </div>
+                <span className="text-2xl font-heading font-black tracking-tighter text-white uppercase">
+                  M Media
+                </span>
+              </Link>
+              <button onClick={() => setIsOpen(false)} className="text-white p-2">
+                <X size={32} />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-8 space-y-10 bg-black">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.1 }}
+                >
                   <Link
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-3xl font-heading font-bold text-white hover:text-primary transition-colors"
+                    className={cn(
+                      "text-5xl font-heading font-black uppercase tracking-tighter transition-all block",
+                      pathname === link.href ? "text-primary" : "text-white hover:text-primary"
+                    )}
                   >
                     {link.name}
                   </Link>
                   {link.submenu && (
-                    <div className="pl-6 flex flex-col gap-4 border-l border-white/10">
+                    <div className="mt-6 pl-6 flex flex-col gap-6 border-l-2 border-primary/20">
                       {link.submenu.map((sub) => (
                         <Link
                           key={sub.name}
                           href={sub.href}
                           onClick={() => setIsOpen(false)}
-                          className="text-xl text-white/50 hover:text-primary transition-colors"
+                          className="text-2xl font-bold text-white/30 hover:text-primary transition-colors"
                         >
                           {sub.name}
                         </Link>
                       ))}
                     </div>
                   )}
-                </div>
+                </motion.div>
               ))}
+            </div>
+
+            <div className="p-8 border-t border-white/10 bg-black">
               <Link
                 href="/contact"
                 onClick={() => setIsOpen(false)}
-                className="mt-6 px-8 py-4 bg-primary text-black font-bold rounded-xl text-center"
+                className="w-full py-6 bg-primary text-black font-black uppercase tracking-widest rounded-2xl text-center block text-xl shadow-[0_0_40px_rgba(255,119,18,0.3)]"
               >
                 Start a Project
               </Link>
@@ -153,6 +179,8 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+
     </nav>
   );
 }
