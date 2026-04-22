@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -47,13 +48,15 @@ export default function Navbar() {
       )}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link href="/" className="group flex items-center gap-2">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center rotate-45 group-hover:rotate-0 transition-transform duration-500">
-            <span className="text-black font-bold text-xl -rotate-45 group-hover:rotate-0 transition-transform duration-500">M</span>
-          </div>
-          <span className="text-2xl font-heading font-black tracking-tighter text-white uppercase">
-            M Media
-          </span>
+        <Link href="/" className="group">
+          <Image 
+            src="/logo-agency.png" 
+            alt="M Media Logo" 
+            width={scrolled ? 180 : 220} 
+            height={60} 
+            className="h-10 md:h-12 w-auto object-contain transition-all duration-500"
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -110,73 +113,72 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "tween", duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 bg-[#000000] z-[9999] lg:hidden flex flex-col h-screen w-screen"
-          >
-            <div className="flex items-center justify-between px-6 py-8 border-b border-white/10">
-              <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2">
-                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center rotate-45">
-                  <span className="text-black font-bold text-xl -rotate-45">M</span>
-                </div>
-                <span className="text-2xl font-heading font-black tracking-tighter text-white uppercase">
-                  M Media
-                </span>
-              </Link>
-              <button onClick={() => setIsOpen(false)} className="text-white p-2">
-                <X size={32} />
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-8 space-y-10 bg-black">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9998] lg:hidden"
+            />
+            
+            {/* Menu Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="fixed top-[5%] left-4 right-4 max-w-lg mx-auto bg-[#0A0A0A] border border-white/10 rounded-[2.5rem] z-[9999] lg:hidden overflow-hidden flex flex-col shadow-2xl"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-8 py-8">
+                <Image 
+                  src="/logo-agency.png" 
+                  alt="M Media Logo" 
+                  width={160} 
+                  height={50} 
+                  className="h-8 w-auto object-contain"
+                />
+                <button 
+                  onClick={() => setIsOpen(false)} 
+                  className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-all"
                 >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Links List */}
+              <div className="px-6 py-4 space-y-2 flex-1">
+                {navLinks.map((link) => (
                   <Link
+                    key={link.name}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
                     className={cn(
-                      "text-5xl font-heading font-black uppercase tracking-tighter transition-all block",
-                      pathname === link.href ? "text-primary" : "text-white hover:text-primary"
+                      "flex items-center px-8 py-5 rounded-2xl text-xl font-bold transition-all",
+                      pathname === link.href 
+                        ? "bg-primary text-white" 
+                        : "text-white/70 hover:bg-white/5 hover:text-white"
                     )}
                   >
                     {link.name}
                   </Link>
-                  {link.submenu && (
-                    <div className="mt-6 pl-6 flex flex-col gap-6 border-l-2 border-primary/20">
-                      {link.submenu.map((sub) => (
-                        <Link
-                          key={sub.name}
-                          href={sub.href}
-                          onClick={() => setIsOpen(false)}
-                          className="text-2xl font-bold text-white/30 hover:text-primary transition-colors"
-                        >
-                          {sub.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            <div className="p-8 border-t border-white/10 bg-black">
-              <Link
-                href="/contact"
-                onClick={() => setIsOpen(false)}
-                className="w-full py-6 bg-primary text-black font-black uppercase tracking-widest rounded-2xl text-center block text-xl shadow-[0_0_40px_rgba(255,119,18,0.3)]"
-              >
-                Start a Project
-              </Link>
-            </div>
-          </motion.div>
+              {/* Bottom Button */}
+              <div className="p-6">
+                <Link
+                  href="/contact"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full py-5 bg-primary text-white font-black uppercase tracking-widest rounded-2xl text-center block text-lg shadow-lg hover:brightness-110 active:scale-95 transition-all"
+                >
+                  Get Started
+                </Link>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 

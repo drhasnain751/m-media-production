@@ -29,8 +29,8 @@ export default function Home() {
       <PortfolioHighlights />
 
       {/* About Preview Section */}
-      <section className="py-24 bg-black relative overflow-hidden">
-        <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+      <section className="py-24 md:py-32 lg:py-48 bg-black relative overflow-hidden">
+        <div className="container mx-auto px-6 md:px-12 lg:px-20 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="relative">
             <div className="aspect-square rounded-3xl overflow-hidden glass border border-white/10 relative z-10">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
@@ -75,8 +75,8 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 bg-primary relative overflow-hidden">
-        <div className="container mx-auto px-6 text-center relative z-10">
+      <section className="py-24 md:py-32 lg:py-48 bg-primary relative overflow-hidden">
+        <div className="container mx-auto px-6 md:px-12 lg:px-20 text-center relative z-10">
           <h2 className="text-5xl md:text-8xl font-black uppercase text-black mb-12 leading-none">
             Ready to scale <br />
             your brand?

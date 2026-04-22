@@ -45,8 +45,8 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="py-24 bg-black relative overflow-hidden">
-      <div className="container mx-auto px-6">
+    <section className="py-24 md:py-32 lg:py-48 bg-black relative overflow-hidden">
+      <div className="container mx-auto px-6 md:px-12 lg:px-20">
         <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-8">
           <div className="max-w-2xl">
             <h2 className="text-4xl md:text-6xl font-black uppercase mb-6">
